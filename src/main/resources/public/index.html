@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Azure Search Demo</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+
+function search() {
+	var content = $('#search').val();
+	
+	if(content != "") { 
+		content = "(*)" + content + "*";
+		var data = {
+			"search":content,
+			"select":"*"
+		}
+		
+		console.log(data);
+	 	$.ajax({
+			type: "POST",
+			url: "http://localhost:8080/azuresearch/searchUser",
+			data: JSON.stringify(data),
+			headers: {
+				"Content-Type" : "application/json"
+			},
+	        success: function(result) {	
+	        	$('#contents').html(JSON.stringify(result));
+	        },
+	         error: function() {
+	        	 $('#contents').html("Something went wrong");
+	         }
+		});
+	}
+}
+
+</script>
+</head>
+<body>
+<h1>Azure Search Demo</h1>
+<h2>Find by Name or Email</h2>
+<div>
+<input type = "text" id = "search" placeholder = "Find by Name or Email" onkeydown = "search()"></input> 
+</div>
+
+<div id = "contents"></div>
+</body>
